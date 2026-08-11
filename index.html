@@ -1,12 +1,324 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>민원 답변 가이드 - 교원전용 학교 민원 대응 표준 답변 작성</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'Roboto', 'sans-serif'],
+            },
+          },
+        },
+      };
+    </script>
+    <!-- React & ReactDOM CDN -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <!-- Babel Standalone CDN -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
   </head>
-  <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 font-sans transition-colors duration-200">
+  <body class="bg-slate-50 text-slate-900 font-sans transition-colors duration-200">
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+
+    <script type="text/babel">
+      const { useState, useEffect } = React;
+
+      // SVG Icon Helper
+      const Icon = ({ path, className = "h-4 w-4", ...props }) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} {...props}>
+          {path}
+        </svg>
+      );
+
+      const ShieldCheck = (p) => <Icon {...p} path={<><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></>} />;
+      const FileText = (p) => <Icon {...p} path={<><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></>} />;
+      const Sparkles = (p) => <Icon {...p} path={<path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>} />;
+      const Key = (p) => <Icon {...p} path={<><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3.5"/></>} />;
+      const X = (p) => <Icon {...p} path={<><path d="M18 6 6 18"/><path d="m6 6 12 12"/></>} />;
+      const Copy = (p) => <Icon {...p} path={<><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></>} />;
+      const ExternalLink = (p) => <Icon {...p} path={<><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></>} />;
+
+      // Initial Data
+      const INITIAL_COMPLAINT_TEMPLATES = [
+        {
+          id: 'grade-01',
+          title: '수행평가 점수 산정 및 감점 기준 이의제기 답변',
+          categoryLabel: '성적·수행평가',
+          summary: '학부모의 수행평가 점수 및 감점 처리 이의제기에 대해 공정 채점기준표와 학업성적관리규정에 근거하여 정중히 안내하는 표준 답변입니다.',
+          fieldPlaceholders: [
+            { key: 'parentName', label: '민원인 성함/호칭', defaultValue: '학부모님' },
+            { key: 'studentAlias', label: '학생 별명/익명 표기', defaultValue: 'A학생' },
+            { key: 'subjectName', label: '해당 교과목명', defaultValue: '해당 과목' },
+            { key: 'assessmentTitle', label: '수행평가 영역명', defaultValue: '수행평가 영역' },
+            { key: 'reviewDate', label: '교과협의회/검토 일자', defaultValue: '2026년 O월 O일' },
+            { key: 'teacherContact', label: '담당 부서 및 연락처', defaultValue: '교무실' }
+          ],
+          templateText: `안녕하십니까, [parentName].
+항상 학교 교육활동에 많은 관심과 성원을 보내주셔서 깊이 감사드립니다.
+
+보내주신 [studentAlias]의 [subjectName] 교과 [assessmentTitle] 수행평가 점수 산정 및 채점 기준에 관한 문의 사항을 신중하게 확인하였습니다.
+
+본교의 모든 수행평가는 교육부 및 시·도교육청의 [학업성적관리 시행지침]과 본교 [학업성적관리규정]에 따라 학기 초 사전 공개된 평가 기준표(Rubric)에 기초하여 엄격하고 객관적으로 진행되고 있습니다.
+
+[parentName]께서 문의해 주신 [assessmentTitle] 항목에 대해, 담당 교과 교사진은 [reviewDate]에 교과협의회를 개최하여 [studentAlias]의 수행평가 제출물과 사전 고지된 채점 기준 요소(내용의 완성도, 논리성, 제출 기한 등)를 다각도로 재검토하였습니다.
+
+검토 결과, 본 평가 항목은 모든 학생에게 동일하게 적용된 세부 채점기준표에 의거하여 정당하게 평가되었음을 안내드립니다. 관련 채점 항목별 구체적인 피드백 및 학생의 작성 결과물 확인을 원하실 경우, 학교 방문 상담 신청을 통해 담당 교사와 객관적 기준을 직접 확인하실 수 있습니다.
+
+추가적인 문의나 방문 상담 신청은 [teacherContact]으로 연락해 주시면 성심껏 안내해 드리겠습니다.
+
+감사합니다.`
+        },
+        {
+          id: 'life-01',
+          title: '스마트폰 소지 제한 및 생활지도 조치 이의제기 답변',
+          categoryLabel: '생활지도·상담',
+          summary: '수업 중 스마트폰 사용 제한 및 분리 보관 조치에 대해 학교생활규정 및 정당한 학생생활지도 고시에 근거하여 답변하는 템플릿입니다.',
+          fieldPlaceholders: [
+            { key: 'parentName', label: '민원인 성함', defaultValue: '학부모님' },
+            { key: 'studentAlias', label: '학생 별명', defaultValue: 'C학생' },
+            { key: 'guidanceDate', label: '생활지도 실시 일자', defaultValue: '2026년 O월 O일' },
+            { key: 'schoolRuleName', label: '관련 학칙 규정명', defaultValue: '본교 학교생활규정' },
+            { key: 'returnTime', label: '반납/수령 예정 시각', defaultValue: '일과 종료 후 반납' }
+          ],
+          templateText: `안녕하십니까, [parentName].
+[studentAlias]의 학교 생활과 학습 환경 조성을 위해 보내주신 말씀 감사드립니다.
+
+[guidanceDate]에 실시된 [studentAlias]의 교내 스마트폰 분리 보관 조치와 관련하여 안내 말씀 드립니다.
+
+교육부 고시 [교원의 학생생활지도에 관한 고시] 제12조 및 [schoolRuleName]에 따라, 교사는 수업 집중도 향상과 전체 학생의 학습권 및 수업권을 보호하기 위해 수업 중 휴대전자기기 사용을 제한하고 필요한 경우 분리 보관할 수 있습니다.
+
+당일 조치는 [studentAlias]에게 사전에 주의 및 안내 후 이루어진 정당한 생활지도 절차였으며, 학생의 물품은 안전하게 보관되었습니다.
+
+[studentAlias]이 건강한 디지털 기기 사용 습관을 기르고 학업에 전념할 수 있도록 가정에서도 함께 지도해 주시기를 부탁드립니다. 분리 보관된 물품은 [returnTime] 규정에 따라 전달될 예정입니다.
+
+감사합니다.`
+        }
+      ];
+
+      // Storage Helpers
+      const API_KEY_STORAGE = 'complaint_guide_gemini_api_key_v1';
+      const getApiKey = () => { try { return localStorage.getItem(API_KEY_STORAGE) || ''; } catch { return ''; } };
+      const setApiKey = (k) => { try { if (k.trim()) localStorage.setItem(API_KEY_STORAGE, k.trim()); else localStorage.removeItem(API_KEY_STORAGE); } catch {} };
+      const removeApiKey = () => { try { localStorage.removeItem(API_KEY_STORAGE); } catch {} };
+
+      // Render helper
+      function renderText(templateText, fields, formValues) {
+        let res = templateText;
+        fields.forEach(f => {
+          const val = formValues[f.key]?.trim() || `[${f.label}]`;
+          res = res.replace(new RegExp(`\\[${f.key}\\]`, 'g'), val).replace(new RegExp(`\\[${f.label}\\]`, 'g'), val);
+        });
+        return res;
+      }
+
+      // Gemini REST Call
+      async function callGemini(apiKey, prompt) {
+        const models = ["gemini-3.6-flash", "gemini-2.5-flash", "gemini-2.0-flash"];
+        let lastErr = null;
+        for (const m of models) {
+          try {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${encodeURIComponent(apiKey)}`;
+            const res = await fetch(url, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+            });
+            const data = await res.json();
+            if (res.ok && data.candidates?.[0]?.content?.parts?.[0]?.text) {
+              return data.candidates[0].content.parts[0].text.trim();
+            } else if (data.error) {
+              lastErr = new Error(data.error.message || 'API 오류');
+            }
+          } catch (e) { lastErr = e; }
+        }
+        throw lastErr || new Error('Gemini API 호출에 실패했습니다.');
+      }
+
+      // App Component
+      function App() {
+        const [selectedTemplate, setSelectedTemplate] = useState(INITIAL_COMPLAINT_TEMPLATES[0]);
+        const [formValues, setFormValues] = useState({});
+        const [draftText, setDraftText] = useState('');
+        const [apiKey, setApiKeyInput] = useState(getApiKey());
+        const [showApiModal, setShowApiModal] = useState(false);
+        const [isPolishing, setIsPolishing] = useState(false);
+        const [toast, setToast] = useState('');
+
+        useEffect(() => {
+          const initial = {};
+          selectedTemplate.fieldPlaceholders.forEach(f => initial[f.key] = f.defaultValue || '');
+          setFormValues(initial);
+        }, [selectedTemplate]);
+
+        useEffect(() => {
+          setDraftText(renderText(selectedTemplate.templateText, selectedTemplate.fieldPlaceholders, formValues));
+        }, [formValues, selectedTemplate]);
+
+        const showToastMsg = (msg) => { setToast(msg); setTimeout(() => setToast(''), 3000); };
+
+        const handleAIPolish = async () => {
+          const k = getApiKey();
+          if (!k) {
+            showToastMsg('AI 키를 먼저 설정해 주세요.');
+            setShowApiModal(true);
+            return;
+          }
+          setIsPolishing(true);
+          try {
+            const prompt = `대한민국 학교 민원 전문 컨설턴트로서 아래 답변 초안을 정중하고 격식 있는 어조로 다듬어 주세요. 개인정보나 실명은 포함하지 말고 완성된 답변 문장만 출력하세요.\n\n[초안]\n${draftText}`;
+            const result = await callGemini(k, prompt);
+            setDraftText(result);
+            showToastMsg('Gemini AI가 답변을 완벽하게 다듬었습니다!');
+          } catch (err) {
+            showToastMsg('AI 오류: ' + err.message);
+          } finally {
+            setIsPolishing(false);
+          }
+        };
+
+        const copyText = () => {
+          navigator.clipboard.writeText(draftText);
+          showToastMsg('클립보드에 복사되었습니다!');
+        };
+
+        return (
+          <div className="min-h-screen bg-slate-50 text-slate-900 font-sans">
+            {/* Header */}
+            <header className="sticky top-0 z-30 border-b bg-white p-4 shadow-xs flex justify-between items-center max-w-7xl mx-auto">
+              <div className="flex items-center gap-2">
+                <ShieldCheck className="h-7 w-7 text-indigo-600"/>
+                <h1 className="text-xl font-bold">민원 답변 가이드</h1>
+              </div>
+              <button
+                onClick={() => setShowApiModal(true)}
+                className={`flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-bold ${
+                  apiKey ? 'bg-indigo-50 border-indigo-200 text-indigo-700' : 'bg-amber-50 border-amber-300 text-amber-800 animate-pulse'
+                }`}
+              >
+                <Key className="h-4 w-4"/>
+                <span>AI 키 설정</span>
+                <span className={`h-2 w-2 rounded-full ${apiKey ? 'bg-emerald-500' : 'bg-amber-500'}`}/>
+              </button>
+            </header>
+
+            {/* Main */}
+            <main className="max-w-7xl mx-auto p-4 md:p-6 grid grid-cols-1 md:grid-cols-12 gap-6">
+              {/* Sidebar List */}
+              <div className="md:col-span-4 space-y-3">
+                <h2 className="text-sm font-bold text-slate-500">표준 민원 템플릿 목록</h2>
+                {INITIAL_COMPLAINT_TEMPLATES.map(t => (
+                  <div
+                    key={t.id}
+                    onClick={() => setSelectedTemplate(t)}
+                    className={`p-4 rounded-xl border cursor-pointer transition-all ${
+                      selectedTemplate.id === t.id ? 'bg-indigo-50 border-indigo-500 shadow-xs' : 'bg-white border-slate-200 hover:border-slate-300'
+                    }`}
+                  >
+                    <span className="text-[10px] font-bold bg-slate-100 text-slate-600 px-2 py-0.5 rounded">{t.categoryLabel}</span>
+                    <h3 className="font-bold text-sm mt-1">{t.title}</h3>
+                    <p className="text-xs text-slate-500 mt-1 line-clamp-2">{t.summary}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Detail & Form */}
+              <div className="md:col-span-8 space-y-4">
+                <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs">
+                  <h2 className="text-lg font-bold text-slate-900">{selectedTemplate.title}</h2>
+                  <p className="text-xs text-slate-500 mt-1">{selectedTemplate.summary}</p>
+
+                  <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {selectedTemplate.fieldPlaceholders.map(f => (
+                      <div key={f.key}>
+                        <label className="block text-xs font-bold text-slate-700 mb-1">{f.label}</label>
+                        <input
+                          type="text"
+                          value={formValues[f.key] || ''}
+                          onChange={e => setFormValues({...formValues, [f.key]: e.target.value})}
+                          className="w-full border rounded-lg p-2 text-sm bg-slate-50"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Draft Output */}
+                <div className="bg-white p-5 rounded-xl border border-indigo-200 shadow-sm space-y-3">
+                  <div className="flex justify-between items-center">
+                    <h3 className="font-bold text-sm text-indigo-900 flex items-center gap-1.5"><FileText className="h-4 w-4"/> 답변 초안 미리보기</h3>
+                    <button onClick={handleAIPolish} disabled={isPolishing} className="bg-indigo-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1 hover:bg-indigo-700">
+                      <Sparkles className="h-3.5 w-3.5"/>
+                      <span>{isPolishing ? '다듬는 중...' : 'AI 어조 다듬기'}</span>
+                    </button>
+                  </div>
+
+                  <textarea
+                    value={draftText}
+                    onChange={e => setDraftText(e.target.value)}
+                    rows={12}
+                    className="w-full border rounded-lg p-3 text-sm bg-slate-50 leading-relaxed"
+                  />
+
+                  <div className="flex justify-end gap-2">
+                    <button onClick={copyText} className="bg-indigo-600 text-white text-xs font-bold px-4 py-2 rounded-lg flex items-center gap-1 shadow-xs">
+                      <Copy className="h-4 w-4"/><span>클립보드 복사</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </main>
+
+            {/* API Key Modal */}
+            {showApiModal && (
+              <div className="fixed inset-0 bg-slate-900/50 flex items-center justify-center p-4 z-50">
+                <div className="bg-white rounded-2xl max-w-md w-full p-6 space-y-4">
+                  <div className="flex justify-between items-center border-b pb-3">
+                    <h3 className="font-bold text-base flex items-center gap-2"><Key className="h-5 w-5 text-indigo-600"/> Gemini API 키 설정</h3>
+                    <button onClick={() => setShowApiModal(false)}><X className="h-5 w-5 text-slate-400"/></button>
+                  </div>
+                  <p className="text-xs text-slate-500">입력한 API 키는 본인 브라우저(localStorage)에만 저장되며 외부로 전송되지 않습니다.</p>
+                  <input
+                    type="password"
+                    value={apiKey}
+                    onChange={e => setApiKeyInput(e.target.value)}
+                    placeholder="Gemini API 키 입력 (AIzaSy...)"
+                    className="w-full border p-2.5 rounded-xl text-sm font-mono bg-slate-50"
+                  />
+                  <div className="flex justify-between items-center text-xs">
+                    <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noreferrer" className="text-indigo-600 font-bold flex items-center gap-1 hover:underline">
+                      <span>키 발급 받기</span><ExternalLink className="h-3 w-3"/>
+                    </a>
+                    <div className="flex gap-2">
+                      <button onClick={() => { removeApiKey(); setApiKeyInput(''); showToastMsg('삭제되었습니다.'); }} className="text-rose-600 font-bold px-2 py-1">삭제</button>
+                      <button onClick={() => { setApiKey(apiKey); setShowApiModal(false); showToastMsg('저장되었습니다.'); }} className="bg-indigo-600 text-white font-bold px-4 py-1.5 rounded-xl">저장</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Toast */}
+            {toast && (
+              <div className="fixed bottom-5 right-5 bg-slate-900 text-white text-xs font-bold px-4 py-3 rounded-xl shadow-lg border border-slate-700">
+                {toast}
+              </div>
+            )}
+          </div>
+        );
+      }
+
+      ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    </script>
   </body>
 </html>
