@@ -1,0 +1,6 @@
+{
+  "name": "민원 답변 가이드",
+  "description": "교사를 위한 법령 및 교육청 지침 기반 학교 민원 표준 답변 작성 및 개인정보 보호 단일 페이지 가이드 웹앱",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
