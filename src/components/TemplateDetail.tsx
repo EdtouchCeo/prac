@@ -18,6 +18,7 @@ import { ComplaintTemplate } from '../types';
 import { renderTemplateWithValues } from '../utils/templateParser';
 import { copyToClipboard, downloadDraftAsTextFile } from '../utils/exportUtils';
 import { getApiKeyFromStorage } from '../utils/storage';
+import { callGeminiClientApi } from '../utils/geminiClient';
 
 interface TemplateDetailProps {
   template: ComplaintTemplate;
@@ -101,34 +102,65 @@ export const TemplateDetail: React.FC<TemplateDetailProps> = ({
   const handleAIPolish = async () => {
     const userApiKey = getApiKeyFromStorage();
 
+    if (!userApiKey) {
+      onShowToast('AI 키를 먼저 넣어 주세요. 상단의 [AI 키 설정]을 클릭해 주세요.', 'warning');
+      onOpenApiKeyModal();
+      return;
+    }
+
     setIsPolishing(true);
     try {
-      const response = await fetch('/api/ai/polish', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          text: draftText,
-          tone: selectedTone,
-          category: template.categoryLabel,
-          relatedLaws: template.relatedLaws.map((l) => `${l.title} ${l.codeOrArticle}`).join(', '),
-          userApiKey,
-        }),
-      });
+      const tonePromptMap: Record<string, string> = {
+        polite: '매우 정중하고 공손하며, 학부모 및 민원인의 마음을 어루만지면서도 명확한 전달력이 돋보이는 어조',
+        firm: '법령과 원칙에 기반하여 단호하고 단단하며, 학교 행정 절차의 정당성을 명확히 전달하는 원칙 중심 어조',
+        empathetic: '따뜻하고 공감적인 어조로 학생의 성장을 함께 고민하는 동반자적 관점의 친절한 어조',
+      };
 
-      const data = await response.json();
-      if (response.ok && data.polishedText) {
-        setDraftText(data.polishedText);
-        onShowToast('AI가 어조를 더욱 정중하고 완벽하게 다듬었습니다!', 'success');
-      } else {
-        if (!userApiKey) {
-          onShowToast('AI 키를 먼저 넣어 주세요. 상단의 [AI 키 설정]을 클릭해 주세요.', 'warning');
-          onOpenApiKeyModal();
+      const prompt = `당신은 대한민국 학교 현장의 교육 행정 및 법령·지침 민원 대응 전문 컨설턴트입니다.
+교사가 작성한 아래의 학교 민원 답변 초안을 ${tonePromptMap[selectedTone] || tonePromptMap.polite}로 다듬어 주세요.
+
+[작성 시 절대 준수 사항]
+1. 학생의 실제 이름이나 주민등록번호 등 민감한 개인정보는 절대 포함하지 마십시오 (필요 시 'A학생', '해당 학생' 등으로 표기).
+2. 관련 법령 및 교육청 지침의 핵심 취지와 사실관계를 훼손하지 마십시오.
+3. 교사의 명예와 학교의 정당한 교육활동을 보호할 수 있는 품격 있고 격식 있는 문체를 사용하십시오.
+4. 오탈자, 맞춤법, 띄어쓰기를 완벽하게 교정하십시오.
+
+[초안 내용]
+${draftText}
+
+오직 완성된 다듬어진 답변 텍스트만 출력해 주세요. (추가 설명이나 인사말 없이 본문만 출력)`;
+
+      let polished = '';
+      try {
+        // Direct browser client fetch (works on GitHub Pages without server)
+        polished = await callGeminiClientApi(userApiKey, prompt);
+      } catch {
+        // Fallback to Express backend if running in fullstack environment
+        const response = await fetch('/api/ai/polish', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            text: draftText,
+            tone: selectedTone,
+            category: template.categoryLabel,
+            relatedLaws: template.relatedLaws.map((l) => `${l.title} ${l.codeOrArticle}`).join(', '),
+            userApiKey,
+          }),
+        });
+        const data = await response.json();
+        if (response.ok && data.polishedText) {
+          polished = data.polishedText;
         } else {
-          onShowToast(data.error || 'AI 다듬기 기능 실행 중 오류가 발생했습니다.', 'warning');
+          throw new Error(data.error || 'AI 다듬기 처리 실패');
         }
       }
+
+      if (polished) {
+        setDraftText(polished);
+        onShowToast('Gemini AI가 어조를 완벽하게 다듬었습니다!', 'success');
+      }
     } catch (err: any) {
-      onShowToast('AI 서버 응답 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.', 'warning');
+      onShowToast('AI 다듬기 실행 실패: ' + (err.message || 'API 키를 확인해 주세요.'), 'warning');
     } finally {
       setIsPolishing(false);
     }
