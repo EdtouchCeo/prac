@@ -23,9 +23,9 @@
       .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
   </head>
-  <body class="bg-slate-50 text-slate-900 font-sans transition-colors duration-200 min-h-screen">
+  <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 font-sans transition-colors duration-200 min-h-screen">
     <!-- Header -->
-    <header class="sticky top-0 z-30 border-b border-slate-200 bg-white/95 backdrop-blur-md">
+    <header class="sticky top-0 z-30 border-b border-slate-200 bg-white/95 backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/95">
       <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
         <div class="flex items-center gap-3">
           <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-600 to-blue-700 text-white shadow-sm">
@@ -33,15 +33,15 @@
           </div>
           <div>
             <div class="flex items-center gap-2">
-              <h1 class="text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">민원 답변 가이드</h1>
-              <span class="hidden rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-semibold text-indigo-700 sm:inline-block">교원전용</span>
+              <h1 class="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100 sm:text-2xl">민원 답변 가이드</h1>
+              <span class="hidden rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-semibold text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300 sm:inline-block">교원전용</span>
             </div>
-            <p class="text-xs text-slate-500">법령·지침 기반 학교 민원 표준 답변 작성 및 개인정보 보호</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400">법령·지침 기반 학교 민원 표준 답변 작성 및 개인정보 보호</p>
           </div>
         </div>
 
         <div class="flex items-center gap-2 sm:gap-3">
-          <button id="btn-open-apikey" class="flex items-center gap-1.5 rounded-lg border px-2.5 py-2 text-xs font-bold transition-all sm:text-sm bg-amber-50 border-amber-300 text-amber-800 animate-pulse">
+          <button id="btn-open-apikey" class="flex items-center gap-1.5 rounded-lg border px-2.5 py-2 text-xs font-bold transition-all sm:text-sm bg-amber-50 border-amber-300 text-amber-800 dark:bg-amber-950/60 dark:border-amber-800 dark:text-amber-300 animate-pulse">
             <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3.5"/></svg>
             <span>AI 키 설정</span>
             <span id="apikey-dot" class="h-2 w-2 rounded-full bg-amber-500"></span>
@@ -52,13 +52,18 @@
             <span class="hidden sm:inline">새 템플릿 등록</span><span class="sm:hidden">등록</span>
           </button>
 
-          <button id="btn-open-privacy" class="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-2 text-xs font-medium text-slate-700 hover:bg-slate-100">
+          <button id="btn-open-privacy" class="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-2 text-xs font-medium text-slate-700 hover:bg-slate-100 dark:border-slate-800 dark:bg-slate-800 dark:text-slate-200">
             <svg class="h-4 w-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
             <span class="hidden lg:inline">보안 가이드</span>
           </button>
 
-          <button id="btn-open-help" class="rounded-lg p-2 text-slate-500 hover:bg-slate-100">
+          <button id="btn-open-help" class="rounded-lg p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800">
             <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+          </button>
+
+          <button id="btn-toggle-theme" class="rounded-lg p-2 text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800">
+            <svg id="icon-sun" class="h-5 w-5 text-amber-400 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+            <svg id="icon-moon" class="h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
           </button>
         </div>
       </div>
@@ -70,21 +75,33 @@
         
         <!-- Sidebar Column -->
         <div class="lg:col-span-5 space-y-4">
-          <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-xs space-y-3">
+          <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-xs space-y-3 dark:border-slate-800 dark:bg-slate-900">
+            <!-- Search -->
             <div class="relative">
               <input
                 id="search-input"
                 type="text"
                 placeholder="민원 키워드, 법령 조항, 템플릿 검색 (예: 수행평가, 학폭)..."
-                class="w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-9 pr-8 text-sm text-slate-900 focus:border-indigo-500 focus:outline-none"
+                class="w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-9 pr-8 text-sm text-slate-900 focus:border-indigo-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"
               />
               <svg class="pointer-events-none absolute left-3 top-3 h-4 w-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
             </div>
 
+            <!-- Filters -->
+            <div class="flex items-center gap-2">
+              <button id="btn-filter-fav" onclick="toggleFavFilter()" class="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
+                <svg class="h-3.5 w-3.5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <span>즐겨찾기</span>
+                <span id="badge-fav-count" class="rounded-full bg-amber-100 px-1.5 py-0.2 text-[10px] font-bold text-amber-800">0</span>
+              </button>
+            </div>
+
+            <!-- Category Pills -->
             <div id="category-pills" class="no-scrollbar flex gap-1.5 overflow-x-auto pb-1">
             </div>
           </div>
 
+          <!-- Template List -->
           <div id="template-list" class="space-y-3">
           </div>
         </div>
@@ -100,44 +117,44 @@
 
     <!-- API Key Modal -->
     <div id="modal-apikey" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 p-4 backdrop-blur-xs">
-      <div class="w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl">
-        <div class="flex items-center justify-between border-b pb-4">
+      <div class="w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-slate-800 dark:bg-slate-900">
+        <div class="flex items-center justify-between border-b pb-4 dark:border-slate-800">
           <div class="flex items-center gap-2.5">
-            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
+            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 dark:bg-indigo-950 dark:text-indigo-400">
               <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3.5"/></svg>
             </div>
             <div>
-              <h3 class="text-lg font-bold text-slate-900">Gemini AI 키 설정</h3>
-              <p class="text-xs text-slate-500">AI 답변 다듬기 기능을 위한 사용자 고유 API 키</p>
+              <h3 class="text-lg font-bold text-slate-900 dark:text-slate-100">Gemini AI 키 설정</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400">AI 답변 다듬기 기능을 위한 사용자 고유 API 키</p>
             </div>
           </div>
-          <button id="close-apikey" class="rounded-lg p-1 text-slate-400 hover:bg-slate-100">
+          <button id="close-apikey" class="rounded-lg p-1 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800">
             <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
           </button>
         </div>
 
-        <div class="mt-4 rounded-xl border border-emerald-200 bg-emerald-50/70 p-3.5 text-xs text-emerald-900 leading-relaxed">
+        <div class="mt-4 rounded-xl border border-emerald-200 bg-emerald-50/70 p-3.5 text-xs text-emerald-900 leading-relaxed dark:border-emerald-900/50 dark:bg-emerald-950/40 dark:text-emerald-200">
           <p class="font-bold">보안 및 개인정보 보호 안내</p>
-          <p class="mt-0.5 text-emerald-800">입력하신 API 키는 서버로 전송되지 않으며, <strong>교사 본인 기기의 브라우저(localStorage)</strong>에만 보관됩니다.</p>
+          <p class="mt-0.5 text-emerald-800 dark:text-emerald-300">입력하신 API 키는 서버로 전송되지 않으며, <strong>교사 본인 기기의 브라우저(localStorage)</strong>에만 보관됩니다.</p>
         </div>
 
         <div class="mt-4">
-          <label class="block text-xs font-bold text-slate-700 mb-1">Gemini API 키</label>
-          <input id="input-apikey" type="password" placeholder="API 키를 입력하세요 (예: AIzaSy...)" class="w-full rounded-xl border border-slate-300 bg-slate-50 py-2.5 px-3.5 text-sm font-mono text-slate-900 focus:border-indigo-500 focus:outline-none" />
+          <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Gemini API 키</label>
+          <input id="input-apikey" type="password" placeholder="API 키를 입력하세요 (예: AIzaSy...)" class="w-full rounded-xl border border-slate-300 bg-slate-50 py-2.5 px-3.5 text-sm font-mono text-slate-900 focus:border-indigo-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100" />
         </div>
 
-        <div class="mt-3 rounded-xl border border-blue-100 bg-blue-50/60 p-3 text-xs flex justify-between items-center">
-          <span class="text-slate-600">API 키가 없으신가요? Google에서 무료 발급받기</span>
-          <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" class="font-bold text-indigo-600 hover:underline inline-flex items-center gap-1">
+        <div class="mt-3 rounded-xl border border-blue-100 bg-blue-50/60 p-3 text-xs flex justify-between items-center dark:border-blue-900/40 dark:bg-blue-950/30">
+          <span class="text-slate-600 dark:text-slate-300">API 키가 없으신가요? Google에서 무료 발급받기</span>
+          <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" class="font-bold text-indigo-600 hover:underline inline-flex items-center gap-1 dark:text-indigo-400">
             <span>키 발급 받기</span>
             <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
           </a>
         </div>
 
-        <div class="mt-6 flex justify-between items-center border-t pt-4">
-          <button id="delete-apikey" class="rounded-xl border border-rose-200 bg-rose-50 px-3.5 py-2 text-xs font-bold text-rose-700 hover:bg-rose-100">키 삭제</button>
+        <div class="mt-6 flex justify-between items-center border-t pt-4 dark:border-slate-800">
+          <button id="delete-apikey" class="rounded-xl border border-rose-200 bg-rose-50 px-3.5 py-2 text-xs font-bold text-rose-700 hover:bg-rose-100 dark:border-rose-900/50 dark:bg-rose-950/40 dark:text-rose-300">키 삭제</button>
           <div class="flex gap-2">
-            <button id="cancel-apikey" class="rounded-xl border px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50">닫기</button>
+            <button id="cancel-apikey" class="rounded-xl border px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">닫기</button>
             <button id="save-apikey" class="rounded-xl bg-indigo-600 px-5 py-2 text-xs font-bold text-white hover:bg-indigo-700">저장하기</button>
           </div>
         </div>
@@ -146,21 +163,21 @@
 
     <!-- Custom Template Modal -->
     <div id="modal-custom" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 p-4 backdrop-blur-xs">
-      <div class="w-full max-w-xl rounded-2xl bg-white p-6 border border-slate-200 shadow-2xl space-y-4">
-        <div class="flex items-center justify-between border-b pb-3">
-          <h3 class="text-lg font-bold text-slate-900">새 민원 답변 템플릿 등록</h3>
+      <div class="w-full max-w-xl rounded-2xl bg-white p-6 border border-slate-200 shadow-2xl space-y-4 dark:border-slate-800 dark:bg-slate-900">
+        <div class="flex items-center justify-between border-b pb-3 dark:border-slate-800">
+          <h3 class="text-lg font-bold text-slate-900 dark:text-slate-100">새 민원 답변 템플릿 등록</h3>
           <button id="close-custom" class="text-slate-400 hover:text-slate-600">
             <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
           </button>
         </div>
         <div class="space-y-3 text-xs">
           <div>
-            <label class="block font-bold text-slate-700 mb-1">제목 *</label>
-            <input id="custom-title" type="text" placeholder="예: 현장체험학습 안전 수칙 답변" class="w-full rounded-xl border border-slate-200 bg-slate-50 p-2.5 text-sm" />
+            <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">제목 *</label>
+            <input id="custom-title" type="text" placeholder="예: 현장체험학습 안전 수칙 답변" class="w-full rounded-xl border border-slate-200 bg-slate-50 p-2.5 text-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100" />
           </div>
           <div>
-            <label class="block font-bold text-slate-700 mb-1">카테고리</label>
-            <select id="custom-category" class="w-full rounded-xl border border-slate-200 bg-slate-50 p-2.5 text-sm">
+            <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">카테고리</label>
+            <select id="custom-category" class="w-full rounded-xl border border-slate-200 bg-slate-50 p-2.5 text-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100">
               <option value="GRADES">성적·수행평가</option>
               <option value="STUDENT_LIFE">생활지도·상담</option>
               <option value="SCHOOL_VIOLENCE">학교폭력·예방</option>
@@ -170,12 +187,12 @@
             </select>
           </div>
           <div>
-            <label class="block font-bold text-slate-700 mb-1">템플릿 본문 ([항목명] 작성 시 입력창 자동생성) *</label>
-            <textarea id="custom-text" rows="6" placeholder="안녕하십니까, [학부모님].&#10;[A학생]의 건에 관한 답변입니다..." class="w-full rounded-xl border border-slate-200 bg-slate-50 p-2.5 text-sm"></textarea>
+            <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">템플릿 본문 ([항목명] 작성 시 입력창 자동생성) *</label>
+            <textarea id="custom-text" rows="6" placeholder="안녕하십니까, [학부모님].&#10;[A학생]의 건에 관한 답변입니다..." class="w-full rounded-xl border border-slate-200 bg-slate-50 p-2.5 text-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"></textarea>
           </div>
         </div>
-        <div class="flex justify-end gap-2 border-t pt-3">
-          <button id="cancel-custom" class="rounded-xl border px-4 py-2 text-xs font-semibold text-slate-600">취소</button>
+        <div class="flex justify-end gap-2 border-t pt-3 dark:border-slate-800">
+          <button id="cancel-custom" class="rounded-xl border px-4 py-2 text-xs font-semibold text-slate-600 dark:border-slate-700 dark:text-slate-300">취소</button>
           <button id="save-custom" class="rounded-xl bg-indigo-600 px-4 py-2 text-xs font-bold text-white">등록하기</button>
         </div>
       </div>
@@ -183,49 +200,49 @@
 
     <!-- Privacy Modal -->
     <div id="modal-privacy" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 p-4 backdrop-blur-xs">
-      <div class="w-full max-w-xl rounded-2xl bg-white p-6 border border-slate-200 shadow-2xl space-y-4">
-        <div class="flex items-center justify-between border-b pb-3">
-          <h3 class="text-lg font-bold text-slate-900">학교 민원 개인정보 보호 가이드</h3>
+      <div class="w-full max-w-xl rounded-2xl bg-white p-6 border border-slate-200 shadow-2xl space-y-4 dark:border-slate-800 dark:bg-slate-900">
+        <div class="flex items-center justify-between border-b pb-3 dark:border-slate-800">
+          <h3 class="text-lg font-bold text-slate-900 dark:text-slate-100">학교 민원 개인정보 보호 가이드</h3>
           <button id="close-privacy" class="text-slate-400 hover:text-slate-600">
             <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
           </button>
         </div>
-        <div class="space-y-3 text-xs text-slate-700 max-h-80 overflow-y-auto">
-          <div class="rounded-xl border border-emerald-200 bg-emerald-50 p-3">
-            <span class="font-bold block text-emerald-900 mb-1">로컬 전용 데이터 보존 원칙</span>
+        <div class="space-y-3 text-xs text-slate-700 dark:text-slate-300 max-h-80 overflow-y-auto">
+          <div class="rounded-xl border border-emerald-200 bg-emerald-50 p-3 dark:border-emerald-900/50 dark:bg-emerald-950/40">
+            <span class="font-bold block text-emerald-900 dark:text-emerald-200 mb-1">로컬 전용 데이터 보존 원칙</span>
             모든 데이터는 교사의 PC 브라우저(LocalStorage)에만 보관되며 외부 서버로 저장되지 않습니다.
           </div>
-          <div class="rounded-xl border border-slate-200 bg-slate-50 p-3 space-y-1">
-            <span class="font-bold text-slate-900">학생 개인정보 최소화 (실명 사용 금지)</span>
+          <div class="rounded-xl border border-slate-200 bg-slate-50 p-3 space-y-1 dark:border-slate-800 dark:bg-slate-800">
+            <span class="font-bold text-slate-900 dark:text-slate-100">학생 개인정보 최소화 (실명 사용 금지)</span>
             <p>답변 작성 시 학생 실명 대신 'A학생', '해당 학생'과 같이 익명 또는 별명 표기를 사용하십시오.</p>
           </div>
-          <div class="rounded-xl border border-slate-200 bg-slate-50 p-3 space-y-1">
-            <span class="font-bold text-slate-900">제3자(타 학생) 개인정보 비공개 원칙</span>
+          <div class="rounded-xl border border-slate-200 bg-slate-50 p-3 space-y-1 dark:border-slate-800 dark:bg-slate-800">
+            <span class="font-bold text-slate-900 dark:text-slate-100">제3자(타 학생) 개인정보 비공개 원칙</span>
             <p>학교폭력 또는 갈등 민원 시 가해/피해 상대 학생의 인적사항이나 가정환경은 절대 유출할 수 없습니다.</p>
           </div>
         </div>
-        <div class="flex justify-end border-t pt-3">
-          <button id="confirm-privacy" class="rounded-xl bg-slate-900 px-4 py-2 text-xs font-bold text-white">닫기</button>
+        <div class="flex justify-end border-t pt-3 dark:border-slate-800">
+          <button id="confirm-privacy" class="rounded-xl bg-slate-900 px-4 py-2 text-xs font-bold text-white dark:bg-slate-100 dark:text-slate-900">닫기</button>
         </div>
       </div>
     </div>
 
     <!-- Help Modal -->
     <div id="modal-help" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 p-4 backdrop-blur-xs">
-      <div class="w-full max-w-lg rounded-2xl bg-white p-6 border border-slate-200 shadow-2xl space-y-4">
-        <div class="flex items-center justify-between border-b pb-3">
-          <h3 class="text-lg font-bold text-slate-900">사용법 안내</h3>
+      <div class="w-full max-w-lg rounded-2xl bg-white p-6 border border-slate-200 shadow-2xl space-y-4 dark:border-slate-800 dark:bg-slate-900">
+        <div class="flex items-center justify-between border-b pb-3 dark:border-slate-800">
+          <h3 class="text-lg font-bold text-slate-900 dark:text-slate-100">사용법 안내</h3>
           <button id="close-help" class="text-slate-400 hover:text-slate-600">
             <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
           </button>
         </div>
-        <div class="space-y-2 text-xs text-slate-600">
+        <div class="space-y-2 text-xs text-slate-600 dark:text-slate-300">
           <p>1. 원하는 민원 템플릿을 좌측 목록에서 선택합니다.</p>
           <p>2. 필수 가변 정보(학부모 성함, 조치 일자 등)를 입력하면 초안이 실시간으로 완성됩니다.</p>
           <p>3. 상단 [AI 키 설정]에서 Gemini API 키를 등록하면 AI 어조 다듬기 기능을 이용할 수 있습니다.</p>
           <p>4. [클립보드 복사] 또는 [.txt 파일 저장] 버튼을 눌러 활용하세요.</p>
         </div>
-        <div class="flex justify-end border-t pt-3">
+        <div class="flex justify-end border-t pt-3 dark:border-slate-800">
           <button id="confirm-help" class="rounded-xl bg-indigo-600 px-4 py-2 text-xs font-bold text-white">확인</button>
         </div>
       </div>
@@ -236,7 +253,7 @@
       <span id="toast-text"></span>
     </div>
 
-    <!-- Pure JavaScript Execution App -->
+    <!-- JavaScript Execution App -->
     <script>
       // Initial Data
       const CATEGORIES = [
@@ -256,7 +273,10 @@
           category: 'GRADES',
           categoryLabel: '성적·수행평가',
           summary: '학부모의 수행평가 점수 및 감점 처리 이의제기에 대해 공정 채점기준표와 학업성적관리규정에 근거하여 정중히 안내하는 표준 답변입니다.',
-          laws: ['초·중등교육법 시행령 제9조', '학교 학업성적관리 시행지침'],
+          laws: [
+            { title: '초·중등교육법 시행령 제9조', summary: '평가계획 사전 공개 의무 및 학업성적관리위 심의 체계' },
+            { title: '시·도교육청 학업성적관리 시행지침', summary: '이의신청 접수 시 교과협의회 객관적 재검토 절차' }
+          ],
           placeholders: [
             { key: 'parentName', label: '민원인 성함/호칭', defaultValue: '학부모님' },
             { key: 'studentAlias', label: '학생 별명/익명 표기', defaultValue: 'A학생' },
@@ -281,12 +301,44 @@
 감사합니다.`
         },
         {
+          id: 'grade-02',
+          title: '지필고사 출제 및 채점 이의신청 공식 답변',
+          category: 'GRADES',
+          categoryLabel: '성적·수행평가',
+          summary: '지필고사 문항 출제 오류 또는 정답 이의신청에 대해 교과협의회 심의 결과 및 정답 확정 절차를 설명하는 표준 답변입니다.',
+          laws: [
+            { title: '학교 학업성적관리규정 제15조', summary: '지필평가 문제 출제 및 이의신청 심의 절차' }
+          ],
+          placeholders: [
+            { key: 'parentName', label: '민원인 성함', defaultValue: '학부모님' },
+            { key: 'studentAlias', label: '학생 별명', defaultValue: 'B학생' },
+            { key: 'examTitle', label: '시험명 및 교과', defaultValue: '1학기 정기고사' },
+            { key: 'questionNum', label: '이의제기 문항 번호', defaultValue: 'O번 문항' },
+            { key: 'decisionResult', label: '심의 결정 내용', defaultValue: '원안 정답 유지 결정' },
+            { key: 'committeeDate', label: '교과협의회 개최일', defaultValue: '2026년 O월 O일' }
+          ],
+          templateText: `안녕하십니까, [parentName].
+본교 교육활동에 관심과 협조를 보내주셔서 감사드립니다.
+
+[examTitle] [questionNum]에 대해 제출해주신 이의신청 건에 관하여 교과협의회 검토 결과를 안내드립니다.
+
+본교는 지필고사 출제 및 채점의 객관성을 확보하기 위해 이의신청 접수 후 [committeeDate] 해당 과목 교사 전원이 참여하는 교과협의회를 소집하였습니다.
+
+관련 시중 서적, 학술적 검토 자료, 교육과정 출제 범위 등을 종합적으로 재검토한 결과, [questionNum]은 [decisionResult]되었습니다.
+
+학생들의 노력이 공정하게 평가받을 수 있도록 본교는 성적 관리 절차를 철저히 이행하고 있습니다.
+
+감사합니다.`
+        },
+        {
           id: 'life-01',
           title: '스마트폰 소지 제한 및 생활지도 조치 이의제기 답변',
           category: 'STUDENT_LIFE',
           categoryLabel: '생활지도·상담',
           summary: '수업 중 스마트폰 사용 제한 및 분리 보관 조치에 대해 학교생활규정 및 정당한 학생생활지도 고시에 근거하여 답변하는 템플릿입니다.',
-          laws: ['교원의 학생생활지도에 관한 고시 제12조'],
+          laws: [
+            { title: '교원의 학생생활지도에 관한 고시 제12조', summary: '수업권 및 학습권 침해 물품의 분리 보관 권한' }
+          ],
           placeholders: [
             { key: 'parentName', label: '민원인 성함', defaultValue: '학부모님' },
             { key: 'studentAlias', label: '학생 별명', defaultValue: 'C학생' },
@@ -313,7 +365,9 @@
           category: 'SCHOOL_VIOLENCE',
           categoryLabel: '학교폭력·예방',
           summary: '접수된 학교폭력 사안 조사 절차 및 학교장 자체해결 요건에 대해 중립적이고 법률에 의거하여 안내하는 답변입니다.',
-          laws: ['학교폭력예방 및 대책에 관한 법률 제13조의2'],
+          laws: [
+            { title: '학교폭력예방 및 대책에 관한 법률 제13조의2', summary: '학교장 자체해결 4가지 요건 및 서면 동의 절차' }
+          ],
           placeholders: [
             { key: 'parentName', label: '보호자 성함', defaultValue: '보호자님' },
             { key: 'studentAlias', label: '자녀 별명', defaultValue: 'D학생' },
@@ -330,6 +384,62 @@
 추가 궁금하신 점은 [contactDept]으로 문의해 주시기 바랍니다.
 
 감사합니다.`
+        },
+        {
+          id: 'rights-01',
+          title: '교사 유선/방문 민원 시 상호존중 및 근무시간 외 연락 제한 안내',
+          category: 'TEACHER_RIGHTS',
+          categoryLabel: '교권보호·교육활동',
+          summary: '야간/주말 민원 전화나 폭언에 대해 정당한 교육활동 보호 지침 및 공식 민원 창구 이용 절차를 안내하는 템플릿입니다.',
+          laws: [
+            { title: '교원의 지위 향상 및 교육활동 보호를 위한 특별법', summary: '정당한 휴식권 보장 및 공식 민원 창구 이용 안내' }
+          ],
+          placeholders: [
+            { key: 'parentName', label: '민원인 성함', defaultValue: '학부모님' },
+            { key: 'availableHours', label: '공식 상담 가능 시간', defaultValue: '평일 15:30 ~ 16:30' },
+            { key: 'officialChannel', label: '공식 민원 창구', defaultValue: '학교 대표전화 및 방문예약' }
+          ],
+          templateText: `안녕하십니까, [parentName].
+늘 학교 교육을 신뢰해 주셔서 감사드립니다.
+
+교사의 수업 준비, 학생 생활지도, 그리고 개인 사생활 보호를 위해 교원 민원응대 지침에 따른 상담 방법을 안내해 드립니다.
+
+근무 시간 외(야간, 주말)에는 정당한 휴식권 보장을 위해 개인 연락처를 통한 민원 상담이 제한됨을 양해해 주시기 바랍니다.
+
+[공식 상담 및 민원 절차]
+- 공식 상담 가능 시간: [availableHours]
+- 상담 신청 채널: [officialChannel]을 통한 사전 방문 예약 및 유선 상담 예약
+
+서로 존중하는 소통 문화 속에서 학생들이 바르게 성장할 수 있습니다.
+
+감사합니다.`
+        },
+        {
+          id: 'attendance-01',
+          title: '교외체험학습 신청 기간 초과 및 질병결석 제출 서류 안내',
+          category: 'ADMIN_ATTENDANCE',
+          categoryLabel: '출결·행정',
+          summary: '연간 허용된 교외체험학습 일수를 초과하거나 질병결석 증빙서류 미제출 시 출석 인정 처리 기준을 안내하는 템플릿입니다.',
+          laws: [
+            { title: '학교생활기록부 작성 및 관리지침 별표 8', summary: '교외체험학습 및 질병결석 서류 기한' }
+          ],
+          placeholders: [
+            { key: 'parentName', label: '민원인 성함', defaultValue: '학부모님' },
+            { key: 'studentAlias', label: '학생 별명', defaultValue: 'F학생' },
+            { key: 'maxAllowedDays', label: '연간 허용 일수', defaultValue: '연간 20일' },
+            { key: 'usedDays', label: '현재 사용 일수', defaultValue: '18일 사용 완료' },
+            { key: 'requiredDocs', label: '필요 증빙 서류', defaultValue: '의사 소견서 또는 진단서' }
+          ],
+          templateText: `안녕하십니까, [parentName].
+[studentAlias]의 출결 처리 및 교외체험학습 신청과 관련하여 안내 말씀드립니다.
+
+본교 출결 관리 지침에 따라 교외체험학습은 [maxAllowedDays] 범위 내에서 출석으로 인정됩니다.
+
+현재 [studentAlias]의 사용 일수는 [usedDays]로 확인되었습니다. 허용 일수 초과 기간은 미인정 결석 처리될 수 있음을 안내해 드립니다.
+
+3일 이상 질병 결석 시에는 [requiredDocs]를 제출해 주시기 바랍니다.
+
+감사합니다.`
         }
       ];
 
@@ -339,32 +449,31 @@
       let selectedTemplateId = 'grade-01';
       let formValues = {};
       let currentDraftText = '';
+      let selectedTone = 'polite';
       let customTemplates = [];
+      let favorites = [];
+      let showFavOnly = false;
+      let showLawDetails = true;
 
       // Storage Helpers
       const API_KEY_STORAGE = 'complaint_guide_gemini_api_key_v1';
       const CUSTOM_STORAGE = 'complaint_guide_customs_v1';
+      const FAV_STORAGE = 'complaint_guide_favs_v1';
 
       function getApiKey() { return localStorage.getItem(API_KEY_STORAGE) || ''; }
       function setApiKey(k) { localStorage.setItem(API_KEY_STORAGE, k.trim()); updateApiKeyUI(); }
       function removeApiKey() { localStorage.removeItem(API_KEY_STORAGE); updateApiKeyUI(); }
 
-      function loadCustoms() {
+      function loadStorage() {
         try { customTemplates = JSON.parse(localStorage.getItem(CUSTOM_STORAGE) || '[]'); } catch { customTemplates = []; }
-      }
-      function saveCustoms() {
-        try { localStorage.setItem(CUSTOM_STORAGE, JSON.stringify(customTemplates)); } catch {}
+        try { favorites = JSON.parse(localStorage.getItem(FAV_STORAGE) || '[]'); } catch { favorites = []; }
       }
 
       function showToast(msg) {
         const el = document.getElementById('toast');
         document.getElementById('toast-text').innerText = msg;
-        el.classList.remove('hidden');
-        el.classList.add('flex');
-        setTimeout(() => {
-          el.classList.add('hidden');
-          el.classList.remove('flex');
-        }, 3000);
+        el.classList.remove('hidden'); el.classList.add('flex');
+        setTimeout(() => { el.classList.add('hidden'); el.classList.remove('flex'); }, 3000);
       }
 
       function updateApiKeyUI() {
@@ -373,10 +482,10 @@
         const btn = document.getElementById('btn-open-apikey');
         if (k) {
           dot.className = 'h-2 w-2 rounded-full bg-emerald-500';
-          btn.className = 'flex items-center gap-1.5 rounded-lg border px-2.5 py-2 text-xs font-bold transition-all sm:text-sm bg-indigo-50 border-indigo-200 text-indigo-700';
+          btn.className = 'flex items-center gap-1.5 rounded-lg border px-2.5 py-2 text-xs font-bold transition-all sm:text-sm bg-indigo-50 border-indigo-200 text-indigo-700 dark:bg-indigo-950/60 dark:border-indigo-900 dark:text-indigo-300';
         } else {
           dot.className = 'h-2 w-2 rounded-full bg-amber-500';
-          btn.className = 'flex items-center gap-1.5 rounded-lg border px-2.5 py-2 text-xs font-bold transition-all sm:text-sm bg-amber-50 border-amber-300 text-amber-800 animate-pulse';
+          btn.className = 'flex items-center gap-1.5 rounded-lg border px-2.5 py-2 text-xs font-bold transition-all sm:text-sm bg-amber-50 border-amber-300 text-amber-800 dark:bg-amber-950/60 dark:border-amber-800 dark:text-amber-300 animate-pulse';
         }
       }
 
@@ -387,7 +496,8 @@
       function getFilteredTemplates() {
         const all = getAllTemplates();
         return all.filter(t => {
-          if (selectedCategory !== 'ALL' && t.category !== selectedCategory) return false;
+          if (showFavOnly && !favorites.includes(t.id)) return false;
+          if (!showFavOnly && selectedCategory !== 'ALL' && t.category !== selectedCategory) return false;
           if (searchQuery.trim()) {
             const q = searchQuery.toLowerCase();
             return t.title.toLowerCase().includes(q) || t.summary.toLowerCase().includes(q);
@@ -403,16 +513,44 @@
           <button
             onclick="setCategory('${c.id}')"
             class="shrink-0 rounded-xl px-3 py-1.5 text-xs font-semibold ${
-              selectedCategory === c.id ? 'bg-slate-900 text-white' : 'border border-slate-200 bg-white text-slate-600'
+              selectedCategory === c.id && !showFavOnly
+                ? 'bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900'
+                : 'border border-slate-200 bg-white text-slate-600 dark:border-slate-800 dark:bg-slate-800 dark:text-slate-300'
             }"
           >${c.label}</button>
         `).join('');
+
+        document.getElementById('badge-fav-count').innerText = favorites.length;
       }
 
       function setCategory(catId) {
+        showFavOnly = false;
         selectedCategory = catId;
         renderCategories();
         renderTemplateList();
+      }
+
+      function toggleFavFilter() {
+        showFavOnly = !showFavOnly;
+        const btn = document.getElementById('btn-filter-fav');
+        if (showFavOnly) {
+          btn.className = 'flex items-center gap-1.5 rounded-lg bg-amber-500 text-white px-3 py-1.5 text-xs font-semibold';
+        } else {
+          btn.className = 'flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300';
+        }
+        renderCategories();
+        renderTemplateList();
+      }
+
+      function toggleFav(tId, e) {
+        if (e) e.stopPropagation();
+        const idx = favorites.indexOf(tId);
+        if (idx > -1) favorites.splice(idx, 1);
+        else favorites.push(tId);
+        localStorage.setItem(FAV_STORAGE, JSON.stringify(favorites));
+        renderCategories();
+        renderTemplateList();
+        renderDetail();
       }
 
       // Render Template List
@@ -420,22 +558,31 @@
         const list = getFilteredTemplates();
         const container = document.getElementById('template-list');
         if (list.length === 0) {
-          container.innerHTML = `<div class="p-8 text-center text-xs text-slate-400 border border-dashed rounded-2xl">일치하는 템플릿이 없습니다.</div>`;
+          container.innerHTML = `<div class="p-8 text-center text-xs text-slate-400 border border-dashed rounded-2xl dark:border-slate-800">일치하는 템플릿이 없습니다.</div>`;
           return;
         }
 
-        container.innerHTML = list.map(t => `
+        container.innerHTML = list.map(t => {
+          const isFav = favorites.includes(t.id);
+          return `
           <div
             onclick="selectTemplate('${t.id}')"
             class="p-4 rounded-2xl border cursor-pointer transition-all ${
-              selectedTemplateId === t.id ? 'border-indigo-600 bg-indigo-50/50 ring-2 ring-indigo-500/20' : 'border-slate-200 bg-white hover:border-slate-300'
+              selectedTemplateId === t.id
+                ? 'border-indigo-600 bg-indigo-50/50 ring-2 ring-indigo-500/20 dark:border-indigo-500 dark:bg-indigo-950/30'
+                : 'border-slate-200 bg-white hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900'
             }"
           >
-            <span class="rounded-md bg-slate-100 px-2 py-0.5 text-[10px] font-bold text-slate-600">${t.categoryLabel}</span>
-            <h3 class="mt-1.5 text-sm font-bold text-slate-900">${t.title}</h3>
-            <p class="mt-1 text-xs text-slate-500 line-clamp-2">${t.summary}</p>
+            <div class="flex items-center justify-between">
+              <span class="rounded-md bg-slate-100 px-2 py-0.5 text-[10px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">${t.categoryLabel}</span>
+              <button onclick="toggleFav('${t.id}', event)" class="text-slate-400 hover:text-amber-500">
+                <svg class="h-4 w-4 ${isFav ? 'fill-amber-400 text-amber-500' : ''}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </button>
+            </div>
+            <h3 class="mt-1.5 text-sm font-bold text-slate-900 dark:text-slate-100">${t.title}</h3>
+            <p class="mt-1 text-xs text-slate-500 dark:text-slate-400 line-clamp-2">${t.summary}</p>
           </div>
-        `).join('');
+        `}).join('');
       }
 
       function selectTemplate(tId) {
@@ -467,27 +614,53 @@
         });
         currentDraftText = rendered;
 
+        const isFav = favorites.includes(t.id);
+
         container.innerHTML = `
           <!-- Header info -->
-          <div class="rounded-2xl border border-slate-200 bg-white p-5">
-            <span class="rounded-md bg-indigo-100 px-2.5 py-0.5 text-xs font-bold text-indigo-800">${t.categoryLabel}</span>
-            <h2 class="mt-2 text-xl font-bold text-slate-900">${t.title}</h2>
-            <p class="mt-1 text-sm text-slate-600">${t.summary}</p>
+          <div class="rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
+            <div class="flex items-center justify-between">
+              <span class="rounded-md bg-indigo-100 px-2.5 py-0.5 text-xs font-bold text-indigo-800 dark:bg-indigo-950 dark:text-indigo-300">${t.categoryLabel}</span>
+              <button onclick="toggleFav('${t.id}')" class="flex items-center gap-1 text-xs font-semibold ${isFav ? 'text-amber-600' : 'text-slate-500'}">
+                <svg class="h-4 w-4 ${isFav ? 'fill-amber-400 text-amber-500' : ''}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <span>${isFav ? '즐겨찾김' : '즐겨찾기'}</span>
+              </button>
+            </div>
+            <h2 class="mt-2 text-xl font-bold text-slate-900 dark:text-slate-100">${t.title}</h2>
+            <p class="mt-1 text-sm text-slate-600 dark:text-slate-300">${t.summary}</p>
           </div>
 
+          <!-- Laws Section -->
+          ${t.laws && t.laws.length > 0 ? `
+            <div class="rounded-2xl border border-blue-100 bg-blue-50/60 p-4 dark:border-blue-900/40 dark:bg-blue-950/20">
+              <div onclick="toggleLawDetails()" class="flex cursor-pointer items-center justify-between">
+                <h3 class="text-xs font-bold text-blue-950 dark:text-blue-200">관련 지침 및 법령 근거 (${t.laws.length}건)</h3>
+                <svg class="h-4 w-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+              </div>
+              <div id="law-content" class="mt-2 space-y-2 text-xs text-slate-700 dark:text-slate-300 border-t border-blue-200/60 pt-2 dark:border-blue-900/50">
+                ${t.laws.map(l => `
+                  <div class="p-2.5 bg-white rounded-xl border border-blue-100 dark:border-blue-900/50 dark:bg-slate-900">
+                    <div class="font-bold text-slate-900 dark:text-slate-100">${l.title}</div>
+                    <div class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">${l.summary}</div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          ` : ''}
+
           <!-- Form Fields -->
-          <div class="rounded-2xl border border-slate-200 bg-white p-5">
-            <h3 class="text-sm font-bold text-slate-900 mb-3">1. 필수 가변 정보 입력</h3>
+          <div class="rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
+            <h3 class="text-sm font-bold text-slate-900 dark:text-slate-100 mb-3">1. 필수 가변 정보 입력</h3>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
               ${t.placeholders.map(p => `
                 <div>
-                  <label class="block text-xs font-bold text-slate-700 mb-1">${p.label}</label>
+                  <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">${p.label}</label>
                   <input
                     type="text"
                     value="${formValues[p.key] || ''}"
                     oninput="handleInput('${p.key}', this.value)"
                     placeholder="예: ${p.defaultValue}"
-                    class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm focus:bg-white focus:outline-none"
+                    class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm focus:bg-white focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"
                   />
                 </div>
               `).join('')}
@@ -495,27 +668,41 @@
           </div>
 
           <!-- Output Draft -->
-          <div class="rounded-2xl border border-indigo-200 bg-white p-5 shadow-sm space-y-3">
-            <div class="flex items-center justify-between">
-              <h3 class="text-sm font-bold text-slate-900">2. 실시간 완성된 답변 미리보기</h3>
-              <button id="btn-polish" onclick="triggerAIPolish()" class="flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-indigo-700">
-                <span>AI 어조 다듬기</span>
-              </button>
+          <div class="rounded-2xl border border-indigo-200 bg-white p-5 shadow-sm space-y-3 dark:border-indigo-900/60 dark:bg-slate-900">
+            <div class="flex items-center justify-between flex-wrap gap-2">
+              <h3 class="text-sm font-bold text-slate-900 dark:text-slate-100">2. 실시간 완성된 답변 미리보기</h3>
+
+              <div class="flex items-center gap-2">
+                <select id="select-tone" onchange="selectedTone = this.value" class="rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-xs font-medium text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200">
+                  <option value="polite">정중·공손 톤</option>
+                  <option value="firm">원칙·단호 톤</option>
+                  <option value="empathetic">공감·친절 톤</option>
+                </select>
+
+                <button id="btn-polish" onclick="triggerAIPolish()" class="flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-indigo-700">
+                  <span>AI 어조 다듬기</span>
+                </button>
+              </div>
             </div>
 
             <textarea
               id="draft-textarea"
               oninput="currentDraftText = this.value"
               rows="12"
-              class="w-full rounded-xl border border-slate-200 bg-slate-50/50 p-4 text-sm leading-relaxed text-slate-900 focus:bg-white focus:outline-none"
+              class="w-full rounded-xl border border-slate-200 bg-slate-50/50 p-4 text-sm leading-relaxed text-slate-900 focus:bg-white focus:outline-none dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100"
             >${rendered}</textarea>
 
-            <div class="flex justify-end gap-2 pt-2 border-t">
-              <button onclick="downloadTxt()" class="rounded-xl border border-slate-300 px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50">.txt 파일 저장</button>
+            <div class="flex justify-end gap-2 pt-2 border-t dark:border-slate-800">
+              <button onclick="downloadTxt()" class="rounded-xl border border-slate-300 px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200">.txt 파일 저장</button>
               <button onclick="copyDraft()" class="rounded-xl bg-indigo-600 px-5 py-2 text-xs font-bold text-white hover:bg-indigo-700">클립보드 복사</button>
             </div>
           </div>
         `;
+      }
+
+      function toggleLawDetails() {
+        const el = document.getElementById('law-content');
+        if (el) el.classList.toggle('hidden');
       }
 
       function handleInput(key, val) {
@@ -552,7 +739,13 @@
         btn.disabled = true;
         btn.innerText = '다듬는 중...';
 
-        const prompt = `대한민국 학교 민원 전문 컨설턴트로서 아래 민원 답변 초안을 학부모에게 전달하기 좋은 매우 정중하고 품격 있는 어조로 다듬어 주세요. 개인정보나 실명은 포함하지 말고 최종 다듬어진 답변만 출력하세요.\n\n[초안]\n${currentDraftText}`;
+        const toneMap = {
+          polite: "매우 정중하고 공손한 어조",
+          firm: "법령과 원칙에 기반하여 단호하고 단단한 어조",
+          empathetic: "따뜻하고 공감적인 어조"
+        };
+
+        const prompt = `대한민국 학교 민원 전문 컨설턴트로서 아래 민원 답변 초안을 학부모에게 전달하기 좋은 ${toneMap[selectedTone] || toneMap.polite}로 다듬어 주세요. 학생 개인정보나 실명은 포함하지 말고 최종 답변 본문만 출력하세요.\n\n[초안]\n${currentDraftText}`;
 
         try {
           const models = ["gemini-3.6-flash", "gemini-2.5-flash", "gemini-2.0-flash"];
@@ -589,12 +782,37 @@
 
       // Event Listeners & Modals Setup
       document.addEventListener('DOMContentLoaded', () => {
-        loadCustoms();
+        loadStorage();
         updateApiKeyUI();
         renderCategories();
         renderTemplateList();
         initFormValues();
         renderDetail();
+
+        // Dark mode setup
+        const btnTheme = document.getElementById('btn-toggle-theme');
+        const iconSun = document.getElementById('icon-sun');
+        const iconMoon = document.getElementById('icon-moon');
+        let isDark = localStorage.getItem('complaint_dark') === 'true';
+
+        function applyTheme() {
+          if (isDark) {
+            document.documentElement.classList.add('dark');
+            iconSun.classList.remove('hidden');
+            iconMoon.classList.add('hidden');
+          } else {
+            document.documentElement.classList.remove('dark');
+            iconSun.classList.add('hidden');
+            iconMoon.classList.remove('hidden');
+          }
+        }
+        applyTheme();
+
+        btnTheme.onclick = () => {
+          isDark = !isDark;
+          localStorage.setItem('complaint_dark', isDark);
+          applyTheme();
+        };
 
         // Search Input
         document.getElementById('search-input').addEventListener('input', (e) => {
@@ -645,7 +863,7 @@
           };
 
           customTemplates.unshift(newCustom);
-          saveCustoms();
+          localStorage.setItem(CUSTOM_STORAGE, JSON.stringify(customTemplates));
           selectedTemplateId = newCustom.id;
           renderTemplateList();
           initFormValues();
